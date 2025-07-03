@@ -1,0 +1,202 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environment
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Next.js
+.next/
+out/
+build/
+
+# Environment Variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# API Keys & Secrets
+api_key.txt
+*.key
+*.pem
+*.p12
+*.pfx
+config/secrets.json
+**/secrets/
+**/*secret*
+**/*password*
+**/*token*
+**/*credential*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+logs/
+*.log
+server.log
+frontend.log
+simple_server.log
+server_enhanced.log
+
+# Uploads & Data - 排除所有课程文件和上传内容
+uploads/
+backend/uploads/
+frontend/uploads/
+data/files_*.json
+backend/data/files_*.json
+backend/data/files.json
+
+# 课程相关大文件
+**/*.pdf
+**/*.mp4
+**/*.avi
+**/*.mov
+**/*.mp3
+**/*.wav
+**/*.m4a
+**/*.flac
+**/*.aac
+**/*.ogg
+**/*.webm
+**/*.mkv
+**/*.flv
+**/*.wmv
+**/*.doc
+**/*.docx
+**/*.ppt
+**/*.pptx
+**/*.xls
+**/*.xlsx
+
+# 生成的图片文件（卡片图片）
+**/card_*.png
+**/knowledge_card_*.png
+**/test_card_*.png
+**/smart_card_*.png
+**/handwritten_*.png
+
+# Docker
+docker-compose.override.yml
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+test_*.txt
+test_*.py
+
+# Build artifacts
+*.tar.gz
+*.zip 
+
+# AI课堂助手特定排除
+backend/reference_images/
+backend/templates/
+backend/fonts/
+venv/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# 数据库文件
+*.db
+*.sqlite
+*.sqlite3
+
+# 备份文件
+*.backup
+*_backup.*
+*.bak
+
+# 大型数据文件
+*.json.gz
+*.csv
+*.tsv
+data/large_*
+**/large_*
+
+# 私钥和证书
+*.crt
+*.csr
+*.p7b
+*.p7s
+*.der
+ssl/
+certs/
+private/
+
+# SSH keys
+id_rsa
+id_dsa
+id_ecdsa
+id_ed25519
+*.pub
+
+# GPG keys
+*.gpg
+*.asc
+
+# 配置文件中的敏感信息
+config.ini
+settings.conf
+**/config/production.*
+
+# 旧版本和备份文件 - 新增
+backend/run_*.py
+backend/*_backup.py
+backend/*_broken*.py
+backend/*_temp.py
+backend/*_tail.py
+backend/*_fixed.py
+api/run.py
+backend/simple_server.py
+simple_server.py
+working_server.py 

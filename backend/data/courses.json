@@ -1,0 +1,19 @@
+{
+  "courses": [
+    {
+      "id": "a1ca436b-9f7a-4519-836a-4c314b2eaa69",
+      "name": "高数二",
+      "createTime": 1743189648
+    },
+    {
+      "id": "a896db99-cc1d-4187-9034-6e66850b3aa7",
+      "name": "工业设计史",
+      "createTime": 1743189861
+    },
+    {
+      "id": "6cfc6948-2503-40cb-8e6e-40fef9ade4cc",
+      "name": "高数一",
+      "createTime": 1743215981
+    }
+  ]
+}

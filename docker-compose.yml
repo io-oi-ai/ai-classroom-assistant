@@ -1,0 +1,92 @@
+version: '3.8'
+
+services:
+  # 前端服务
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL:-http://localhost:8001}
+    restart: unless-stopped
+    networks:
+      - ai-classroom-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # 后端服务
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.backend
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./uploads:/app/uploads
+      - ./backend/data:/app/data
+      - ./backend/templates:/app/templates
+    environment:
+      - GOOGLE_AI_API_KEY=${GOOGLE_AI_API_KEY}
+      - HOST=0.0.0.0
+      - PORT=8001
+      - DEBUG=${DEBUG:-false}
+      - PYTHONPATH=/app
+      - UPLOAD_DIR=/app/uploads
+      - DATA_DIR=/app/data
+    restart: unless-stopped
+    networks:
+      - ai-classroom-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/api/courses"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Nginx反向代理 (生产环境推荐)
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./uploads:/var/www/uploads:ro
+      - ./ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - frontend
+      - backend
+    restart: unless-stopped
+    networks:
+      - ai-classroom-network
+    profiles:
+      - production
+
+  # Redis缓存 (可选，提升性能)
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    networks:
+      - ai-classroom-network
+    profiles:
+      - production
+
+networks:
+  ai-classroom-network:
+    driver: bridge
+
+volumes:
+  uploads:
+  data: 
+  redis_data: 

@@ -1,0 +1,31 @@
+#!/bin/bash
+# 部署配置脚本
+
+echo "创建生产环境配置..."
+
+cat > .env.production << 'ENVEOF'
+# AI课堂助手生产环境配置
+GOOGLE_AI_API_KEY=AIzaSyCbJ8PlTK7UTCkKwCv1uVyM5RXnsMv4qLM
+
+# 服务器配置
+PORT=8001
+HOST=0.0.0.0
+
+# 生产模式
+DEBUG=false
+
+# 文件上传限制 (MB)
+MAX_FILE_SIZE_VIDEO=100
+MAX_FILE_SIZE_AUDIO=20
+MAX_FILE_SIZE_IMAGE=10
+MAX_FILE_SIZE_DOCUMENT=10
+
+# 数据存储路径
+UPLOAD_DIR=uploads
+DATA_DIR=backend/data
+
+# 前端配置（使用服务器IP）
+NEXT_PUBLIC_API_URL=http://47.112.185.79:8001
+ENVEOF
+
+echo "配置文件创建完成"

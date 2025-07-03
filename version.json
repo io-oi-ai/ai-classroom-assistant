@@ -1,0 +1,49 @@
+{
+  "name": "AI课堂助手",
+  "version": "4.6.0",
+  "description": "智能学习笔记生成系统，支持多格式文件处理和AI图像生成",
+  "author": "AI课堂助手团队",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/ai-classroom-assistant.git"
+  },
+  "technologies": {
+    "frontend": "Next.js 14",
+    "backend": "Python FastAPI",
+    "ai": "Google AI API",
+    "database": "JSON文件存储"
+  },
+  "features": [
+    "智能学习笔记生成",
+    "5区域色彩编码布局",
+    "多格式文件支持",
+    "AI增强图像生成",
+    "图片预览下载",
+    "手写笔记识别"
+  ],
+  "deployment": {
+    "server": "阿里云ECS",
+    "domain": "47.112.185.79:8001",
+    "last_updated": "2025-01-28"
+  },
+  "changelog": {
+    "4.6.0": {
+      "date": "2025-01-28",
+      "changes": [
+        "添加Git版本控制",
+        "创建自动化部署脚本",
+        "优化服务器配置",
+        "添加安全组配置"
+      ]
+    },
+    "4.5.0": {
+      "date": "2025-01-27",
+      "changes": [
+        "完成基础功能开发",
+        "实现Docker容器化",
+        "添加生产环境配置"
+      ]
+    }
+  }
+} 

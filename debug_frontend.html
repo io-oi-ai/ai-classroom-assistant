@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>前端后端连接测试</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        .success { background-color: #d4edda; border-color: #c3e6cb; }
+        .error { background-color: #f8d7da; border-color: #f5c6cb; }
+        button { padding: 10px 20px; margin: 5px; background: #007bff; color: white; border: none; border-radius: 3px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        pre { background: #f8f9fa; padding: 10px; border-radius: 3px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>AI课堂助手 - 前端后端连接诊断</h1>
+    
+    <div class="test-section">
+        <h2>测试1: 后端连通性测试</h2>
+        <button onclick="testBackendConnection()">测试后端连接</button>
+        <div id="backend-result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>测试2: 课程列表API测试</h2>
+        <button onclick="testCoursesAPI()">获取课程列表</button>
+        <div id="courses-result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>测试3: 笔记卡片API测试</h2>
+        <button onclick="testCardsAPI()">测试笔记卡片API</button>
+        <div id="cards-result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>测试4: 生成笔记卡片测试</h2>
+        <button onclick="testGenerateCards()">生成笔记卡片</button>
+        <div id="generate-result"></div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:8000';
+
+        async function testBackendConnection() {
+            const resultDiv = document.getElementById('backend-result');
+            resultDiv.innerHTML = '<p>正在测试后端连接...</p>';
+            
+            try {
+                const response = await fetch(`${API_BASE}/api/courses`);
+                if (response.ok) {
+                    resultDiv.innerHTML = '<p class="success">✅ 后端连接成功！状态码: ' + response.status + '</p>';
+                } else {
+                    resultDiv.innerHTML = '<p class="error">❌ 后端连接失败！状态码: ' + response.status + '</p>';
+                }
+            } catch (error) {
+                resultDiv.innerHTML = '<p class="error">❌ 连接错误: ' + error.message + '</p>';
+            }
+        }
+
+        async function testCoursesAPI() {
+            const resultDiv = document.getElementById('courses-result');
+            resultDiv.innerHTML = '<p>正在获取课程列表...</p>';
+            
+            try {
+                const response = await fetch(`${API_BASE}/api/courses`);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    resultDiv.className = 'test-section success';
+                    resultDiv.innerHTML = `
+                        <h3>✅ 课程列表获取成功！</h3>
+                        <p>找到 ${data.courses?.length || 0} 个课程</p>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `;
+                } else {
+                    resultDiv.className = 'test-section error';
+                    resultDiv.innerHTML = '<p>❌ 获取课程列表失败: ' + JSON.stringify(data) + '</p>';
+                }
+            } catch (error) {
+                resultDiv.className = 'test-section error';
+                resultDiv.innerHTML = '<p>❌ 请求错误: ' + error.message + '</p>';
+            }
+        }
+
+        async function testCardsAPI() {
+            const resultDiv = document.getElementById('cards-result');
+            resultDiv.innerHTML = '<p>正在测试笔记卡片API...</p>';
+            
+            try {
+                // 先获取课程列表，然后测试第一个课程的卡片
+                const coursesResponse = await fetch(`${API_BASE}/api/courses`);
+                const coursesData = await coursesResponse.json();
+                
+                if (coursesData.courses && coursesData.courses.length > 0) {
+                    const firstCourse = coursesData.courses[0];
+                    const cardsResponse = await fetch(`${API_BASE}/api/courses/${firstCourse.id}/cards`);
+                    const cardsData = await cardsResponse.json();
+                    
+                    if (cardsResponse.ok) {
+                        resultDiv.className = 'test-section success';
+                        resultDiv.innerHTML = `
+                            <h3>✅ 笔记卡片API测试成功！</h3>
+                            <p>测试课程: ${firstCourse.name}</p>
+                            <p>找到 ${cardsData.cards?.length || 0} 张笔记卡片</p>
+                            <pre>${JSON.stringify(cardsData, null, 2)}</pre>
+                        `;
+                    } else {
+                        resultDiv.className = 'test-section error';
+                        resultDiv.innerHTML = '<p>❌ 笔记卡片API失败: ' + JSON.stringify(cardsData) + '</p>';
+                    }
+                } else {
+                    resultDiv.className = 'test-section error';
+                    resultDiv.innerHTML = '<p>❌ 没有找到可测试的课程</p>';
+                }
+            } catch (error) {
+                resultDiv.className = 'test-section error';
+                resultDiv.innerHTML = '<p>❌ 请求错误: ' + error.message + '</p>';
+            }
+        }
+
+        async function testGenerateCards() {
+            const resultDiv = document.getElementById('generate-result');
+            resultDiv.innerHTML = '<p>正在测试生成笔记卡片...</p>';
+            
+            try {
+                // 先获取课程列表
+                const coursesResponse = await fetch(`${API_BASE}/api/courses`);
+                const coursesData = await coursesResponse.json();
+                
+                if (coursesData.courses && coursesData.courses.length > 0) {
+                    const firstCourse = coursesData.courses[0];
+                    
+                    resultDiv.innerHTML = '<p>正在为课程 "' + firstCourse.name + '" 生成笔记卡片，请稍候...</p>';
+                    
+                    const generateResponse = await fetch(`${API_BASE}/api/courses/${firstCourse.id}/generate-cards`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ file_ids: [] })
+                    });
+                    
+                    const generateData = await generateResponse.json();
+                    
+                    if (generateResponse.ok && generateData.success) {
+                        resultDiv.className = 'test-section success';
+                        resultDiv.innerHTML = `
+                            <h3>✅ 笔记卡片生成成功！</h3>
+                            <p>为课程 "${firstCourse.name}" 生成了 ${generateData.cards?.length || 0} 张笔记卡片</p>
+                            <details>
+                                <summary>查看详细信息</summary>
+                                <pre>${JSON.stringify(generateData, null, 2)}</pre>
+                            </details>
+                        `;
+                    } else {
+                        resultDiv.className = 'test-section error';
+                        resultDiv.innerHTML = `
+                            <h3>❌ 笔记卡片生成失败</h3>
+                            <p>错误信息: ${generateData.error || '未知错误'}</p>
+                            <details>
+                                <summary>查看详细信息</summary>
+                                <pre>${JSON.stringify(generateData, null, 2)}</pre>
+                            </details>
+                        `;
+                    }
+                } else {
+                    resultDiv.className = 'test-section error';
+                    resultDiv.innerHTML = '<p>❌ 没有找到可测试的课程</p>';
+                }
+            } catch (error) {
+                resultDiv.className = 'test-section error';
+                resultDiv.innerHTML = '<p>❌ 请求错误: ' + error.message + '</p>';
+            }
+        }
+
+        // 页面加载时自动运行第一个测试
+        window.onload = function() {
+            testBackendConnection();
+        };
+    </script>
+</body>
+</html> 
