@@ -1,17 +1,17 @@
 "use client"
 
-import { DialogFooter } from "../components/ui/dialog"
+import { DialogFooter } from "@/components/ui/dialog"
 
 import type React from "react"
 
 import { useState, useRef, useEffect } from "react"
 import { useChat } from "@ai-sdk/react"
-import { Button } from "../components/ui/button"
-import { Textarea } from "../components/ui/textarea"
-import { Avatar, AvatarFallback } from "../components/ui/avatar"
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "../components/ui/card"
-import { Tabs, TabsList, TabsTrigger } from "../components/ui/tabs"
-import { ScrollArea } from "../components/ui/scroll-area"
+import { Button } from "@/components/ui/button"
+import { Textarea } from "@/components/ui/textarea"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { ScrollArea } from "@/components/ui/scroll-area"
 import {
   FileText,
   Send,
@@ -40,11 +40,11 @@ import {
   ChevronRight,
   X
 } from "lucide-react"
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "../components/ui/dialog"
-import { Input } from "../components/ui/input"
-import { Label } from "../components/ui/label"
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import { v4 as uuidv4 } from "uuid"
-import { Progress } from "../components/ui/progress"
+import { Progress } from "@/components/ui/progress"
 import { API_CONFIG, getApiUrl, getCourseUrl } from './config'
 
 interface Course {
